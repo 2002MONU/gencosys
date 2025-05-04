@@ -38,6 +38,12 @@
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="card-title"> @yield('title')</h5>
+                <div class="card-action">
+                 
+                <a href="{{ route('students.export') }}" class="btn btn-info w-100">
+                  📥 Export 
+              </a>
+                </div>
               </div>
           <div class="card-body">
 

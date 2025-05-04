@@ -42,6 +42,6 @@ Route::group(['prefix' => 'admin'], function (){
       // courses
         Route::resource('courses',CourseController::class); 
         Route::get('registerStudent', [DashboardPageController::class, 'registerStudent'])->name('registerStudent');
-
+        Route::get('/students/export', [DashboardPageController::class, 'export'])->name('students.export');
     });
 });
