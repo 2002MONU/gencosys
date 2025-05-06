@@ -17,10 +17,11 @@ class RegisterController extends Controller
 
     public function storeStep1(Request $request)
     {
+       // return $request;
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:students,email',
             'mobile' => 'required',
             'course_id' => 'required|exists:courses,id',
         ]);
@@ -35,17 +36,31 @@ class RegisterController extends Controller
     public function step2()
     {
         $studentData = session('student');
+      //  dd($studentData);
         $course = Course::findOrFail($studentData['course_id']);
-        return view('website.registerStep2', compact('course'));
+        $courses  = Course::get();
+        return view('website.registerStep2', compact('course','courses','studentData'));
     }
 
-    public function storeStep2()
+    public function storeStep2(Request $request)
     {
+        // Validate the new course ID
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+        ]);
+
+        // Update the session data with the new course ID
+        $studentData = session('student');
+        $studentData['course_id'] = $request->course_id;
+        session(['student' => $studentData]);
+
+        // Redirect to the confirmation page
         return redirect()->route('register.confirmation');
     }
 
     public function confirmation()
     {
+
         $student = session('student');
         // dd($student);
         $course = Course::findOrFail($student['course_id']);
@@ -57,14 +72,16 @@ class RegisterController extends Controller
         $data = session('student');
 
         $student = Student::create($data);
+       
         session()->forget('student');
 
-        return redirect()->route('register.success');
+        return redirect()->route('register.success',['id' => $student->id]);
     }
 
-    public function success()
+    public function success(Request $request)
     {
-        return view('website.success');
+        $studentId = $request->id;
+        return view('website.success', compact('studentId'));
     }
 
 }

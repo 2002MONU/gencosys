@@ -27,7 +27,7 @@ Route::get('/step2', [RegisterController::class, 'step2'])->name('register.step2
 Route::post('/step2', [RegisterController::class, 'storeStep2'])->name('register.storeStep2');
 Route::get('/confirmation', [RegisterController::class, 'confirmation'])->name('register.confirmation');
 Route::post('/submit', [RegisterController::class, 'submit'])->name('register.submit');
-Route::get('/success', [RegisterController::class, 'success'])->name('register.success');
+Route::get('/success/{id?}', [RegisterController::class, 'success'])->name('register.success');
 
 
 Route::group(['prefix' => 'admin'], function (){

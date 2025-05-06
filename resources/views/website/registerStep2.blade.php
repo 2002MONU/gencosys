@@ -41,13 +41,13 @@
                         <p class="card-text"><strong>Fees:</strong> ${{ $course->fees }}</p>
                         <div class="d-grid gap-2">
                             <a href="{{ route('register.confirmation', $course->id) }}" class="btn btn-success">✅ Buy Now</a>
-                            <a href="{{ route('register.step1') }}" class="btn btn-secondary">🔄 Change Course</a>
+                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">🔄 Change Course</button>
                         </div>
                     </div>
                 </div>
                 @else
                 <p class="text-danger">No course selected. Please go back and select a course.</p>
-                <a href="{{ route('register.step1') }}" class="btn btn-secondary">🔄 Change Course</a>
+                <button class="btn btn-secondary" >🔄 Change Course</a>
                 @endif
             </div>
          </div>
@@ -58,4 +58,42 @@
    <script src="{{asset('dash_assets/js/jquery.min.js')}}"></script>
    <script src="{{asset('dash_assets/js/bootstrap.bundle.min.js')}}"></script>
    <script src="{{asset('dash_assets/js/moment.min.js')}}"></script>
+
+ 
+ 
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h1 class="modal-title fs-5" id="exampleModalLabel">Change Course</h1>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <div class="modal-body">
+         <form action="{{route('register.storeStep2')}}" method="POST" enctype="multipart/form-data">
+            @csrf
+            
+            <div class="form-group">
+               <label for="currentCourse">Current Course</label>
+               <input type="text" id="currentCourse" class="form-control" value="{{ $course->name ?? 'No course selected' }}" readonly>
+            </div>
+
+            <div class="form-group mt-3">
+               <label for="course_id">Select New Course</label>
+               <select name="course_id" id="course_id" class="form-control">
+                  @foreach ($courses as $index)
+                  <option value="{{$index->id}}" {{$index->id == $course->id ? 'selected' : ''}}>{{$index->name}}</option>
+                  @endforeach
+               </select>
+            </div>
+            
+            <div class="modal-footer mt-3">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Save changes</button>
+             </div>
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>
 </html>

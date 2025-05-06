@@ -26,6 +26,7 @@
             <!-- Success message starts -->
             <div class="auth-box">
                 <div class="success-message">
+                    <h2>Your enrollment No: {{$studentId}}</h2>
                     <h1 class="text-success">🎉 Registration Successful!</h1>
                     <p>Thank you message with brief enrollment confirmation.</p>
                     <div class="d-grid gap-2 mt-4">
